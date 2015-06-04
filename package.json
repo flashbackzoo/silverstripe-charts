@@ -1,0 +1,37 @@
+{
+  "name": "silverstripe-charts",
+  "version": "1.0.0",
+  "description": "Display your data using Chart.js",
+  "main": "static/js/dist/main.js",
+  "scripts": {
+    "test": "mocha",
+    "coverage": "istanbul cover --report html _mocha --",
+    "build:js": "cp node_modules/chart.js/Chart.min.js static/js/dist/chart.js && cp static/js/src/main.js static/js/dist/main.js",
+    "build:css": "stylus --compress < static/styl/main.styl > static/css/main.css",
+    "build": "npm run build:js && npm run build:css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flashbackzoo/silverstripe-charts.git"
+  },
+  "keywords": [
+    "SilverStripe",
+    "Chart.js",
+    "Graph"
+  ],
+  "author": "David Craig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flashbackzoo/silverstripe-charts/issues"
+  },
+  "homepage": "https://github.com/flashbackzoo/silverstripe-charts",
+  "dependencies": {
+    "Chart.js": "git://github.com/nnnick/Chart.js#v1.0.2"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "istanbul": "^0.3.14",
+    "mocha": "^2.2.5",
+    "stylus": "^0.51.1"
+  }
+}
