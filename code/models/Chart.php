@@ -7,7 +7,7 @@ class Chart extends DataObject {
     private static $db = array(
         'Question' => 'Varchar',
         'ChartType' => 'Varchar',
-        'Evaluation' => 'HTMLText',
+        'Description' => 'HTMLText',
     );
 
     private static $has_one = array(
@@ -18,20 +18,24 @@ class Chart extends DataObject {
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        $options = array('Pie Chart', 'Bar Chart');
-        $field = DropdownField::create('ChartType', 'Type of Chart', $options)
-            ->setEmptyString('(Select one)');
+        $chartTypes = array(
+            'bar' => 'Bar Chart',
+            'pie' => 'Pie Chart'
+        );
+        $chartTypeDropdown = DropdownField::create(
+            'ChartType',
+            'Type of Chart',
+            $chartTypes
+        )->setEmptyString('(Select one)');
 
-        $upload = new UploadField(
+        $dataUpload = new UploadField(
             $name = 'UploadCsv',
             $title = 'Upload a CSV File'
         );
 
-        $fields->addFieldsToTab('Root.Main', array(
-            $field,
-            $upload,
-            HTMLEditorField::create('Evaluation', 'Evaluation')
-        ));
+        $description = HTMLEditorField::create('Description', 'Description');
+
+        $fields->addFieldsToTab('Root.Main', array($chartTypeDropdown, $dataUpload, $description));
 
         return $fields;
     }
