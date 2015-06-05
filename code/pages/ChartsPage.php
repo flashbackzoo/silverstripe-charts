@@ -8,10 +8,26 @@ class ChartsPage extends Page {
         'Conclusion' => 'HTMLText'
     );
 
+    private static $has_many = array(
+        'Charts' => 'Chart'
+    );
+
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
+        $gridField = GridField::create(
+            'Charts',
+            'Charts',
+            $this->Charts(),
+            GridFieldConfig_RelationEditor::create()
+        );
+
+        //$gridConfig = $gridField->getConfig();
+
+
+
         $fields->addFieldsToTab('Root.Main', array(
+            $gridField,
             HTMLEditorField::create('Conclusion', 'Conclusion')
         ));
 
