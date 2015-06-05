@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "coverage": "istanbul cover --report html _mocha --",
-    "build:js": "cp node_modules/chart.js/Chart.min.js static/js/dist/chart.js && cp static/js/src/main.js static/js/dist/main.js",
+    "build:js": "browserify static/js/src/main.js > static/js/dist/main.js",
     "build:css": "stylus --compress < static/styl/main.styl > static/css/main.css",
     "build": "npm run build:js && npm run build:css"
   },
@@ -25,13 +25,23 @@
     "url": "https://github.com/flashbackzoo/silverstripe-charts/issues"
   },
   "homepage": "https://github.com/flashbackzoo/silverstripe-charts",
-  "dependencies": {
-    "Chart.js": "git://github.com/nnnick/Chart.js#v1.0.2"
-  },
   "devDependencies": {
+    "Chart.js": "git://github.com/nnnick/Chart.js#v1.0.2",
+    "browserify": "^10.2.3",
+    "browserify-shim": "^3.8.8",
     "expect.js": "^0.3.1",
     "istanbul": "^0.3.14",
+    "jquery": "^2.1.4",
     "mocha": "^2.2.5",
     "stylus": "^0.51.1"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "node_modules/jquery/dist/jquery.js": "$",
+    "node_modules/chart.js/Chart.js": "Chart"
   }
 }

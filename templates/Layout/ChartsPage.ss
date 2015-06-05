@@ -1,5 +1,11 @@
 <h1>$Title</h1>
 
-$Content
+<div>$Content</div>
 
-$Conclusion
+<div>
+    <% loop $Charts %>
+        <% include ChartComponent %>
+    <% end_loop %>
+</div>
+
+<div>$Conclusion</div>
