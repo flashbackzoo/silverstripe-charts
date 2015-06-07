@@ -55,4 +55,49 @@ class Chart extends DataObject {
         return new RequiredFields('Title', 'ChartType', 'Description', 'UploadCsv');
     }
 
+    private function getBarChartData() {
+        if (!$this->UploadCsv()->ID) {
+            return null;
+        }
+
+        $parser = new CSVParser($this->UploadCsv()->getFullPath());
+
+        $data = array(
+            'labels' => array(),
+            'datasets' => array(
+                'data' => array()
+            )
+        );
+
+        foreach ($parser as $row) {
+            $data['labels'][] = $row['Option'];
+            $data['datasets']['data'][] = $row['Count'];
+        }
+
+        return Convert::raw2xml(json_encode($data));
+    }
+
+    private function getPieChartData() {
+        $parser = new CSVParser($this->UploadCsv()->getFullPath());
+
+        $data = array();
+
+        foreach ($parser as $row) {
+            $data[] = array(
+                'label' => $row['Option'],
+                'value' => $row['Count']
+            );
+        }
+
+        return Convert::raw2xml(json_encode($data));
+    }
+
+    public function getChartData() {
+        if ($this->ChartType == 'bar') {
+            return $this->getBarChartData();
+        } else {
+            return $this->getPieChartData();
+        }
+    }
+
 }

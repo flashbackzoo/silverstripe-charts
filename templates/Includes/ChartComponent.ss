@@ -1,6 +1,6 @@
 <div class="chart-wrapper">
     <div class="chart-visual">
-        <canvas id="$ChartType-$ID" class="chart-type-$ChartType"></canvas>
+        <canvas id="$ChartType-$ID" class="chart-type-$ChartType" data-json="$ChartData"></canvas>
     </div>
     <div class="chart-text">
         <h2>$Title</h2>
