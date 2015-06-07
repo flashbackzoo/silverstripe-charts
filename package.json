@@ -19,7 +19,16 @@
     "Chart.js",
     "Graph"
   ],
-  "author": "David Craig",
+  "contributors": [
+    {
+      "name": "David Craig",
+      "email": "david@silverstripe.com"
+    },
+    {
+      "name": "Ian Herbert",
+      "email": "ian@silverstripe.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/flashbackzoo/silverstripe-charts/issues"

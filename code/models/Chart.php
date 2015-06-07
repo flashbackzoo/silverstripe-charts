@@ -5,7 +5,8 @@ class Chart extends DataObject {
     private static $description = 'Enter your chart data';
 
     private static $db = array(
-        'Question' => 'Varchar',
+        'SortOrder'=>'Int',
+        'Title' => 'Varchar',
         'ChartType' => 'Varchar',
         'Description' => 'HTMLText',
     );
@@ -15,29 +16,43 @@ class Chart extends DataObject {
         'UploadCsv' => 'File',
     );
 
+    public static $default_sort = 'SortOrder';
+
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
-        $chartTypes = array(
-            'bar' => 'Bar Chart',
-            'pie' => 'Pie Chart'
-        );
+        $fields->removeByName('SortOrder');
+        $fields->removeByName('ChartsPageID');
+
         $chartTypeDropdown = DropdownField::create(
             'ChartType',
-            'Type of Chart',
-            $chartTypes
-        )->setEmptyString('(Select one)');
+            'Chart type',
+            array(
+                'bar' => 'Bar Chart',
+                'pie' => 'Pie Chart'
+            ))
+            ->setEmptyString('(Select one)');
 
-        $dataUpload = new UploadField(
-            $name = 'UploadCsv',
-            $title = 'Upload a CSV File'
-        );
+        $dataUpload = UploadField::create(
+            'UploadCsv',
+            'Chart data')
+            ->setDescription('CSV data for the chart');
+        $dataUpload->allowedExtensions = array('csv');
 
         $description = HTMLEditorField::create('Description', 'Description');
 
-        $fields->addFieldsToTab('Root.Main', array($chartTypeDropdown, $dataUpload, $description));
+        $fields->addFieldsToTab('Root.Main', array(
+            $chartTypeDropdown,
+            $description
+        ));
+
+        $fields->addFieldToTab('Root.Main', $dataUpload, 'Description');
 
         return $fields;
+    }
+
+    public function getCMSValidator() {
+        return new RequiredFields('Title', 'ChartType', 'Description', 'UploadCsv');
     }
 
 }

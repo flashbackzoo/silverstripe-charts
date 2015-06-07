@@ -15,17 +15,30 @@ class ChartsPage extends Page {
     public function getCMSFields() {
         $fields = parent::getCMSFields();
 
+        $config = GridFieldConfig_RelationEditor::create();
+        $config->removeComponentsByType('GridFieldAddExistingAutocompleter');
+        $config->removeComponentsByType('GridFieldSortableHeader');
+        $config->removeComponentsByType('GridFieldDeleteAction');
+        $config->addComponent(new GridFieldSortableRows('SortOrder'));
+
         $gridField = GridField::create(
             'Charts',
             'Charts',
             $this->Charts(),
-            GridFieldConfig_RelationEditor::create()
+            $config
         );
 
+        $dataColumns = $config->getComponentByType('GridFieldDataColumns');
+
+        $dataColumns->setDisplayFields(array(
+            'Title' => 'Title'
+        ));
+
         $fields->addFieldsToTab('Root.Main', array(
+            HTMLEditorField::create('Content', 'Intro'),
             $gridField,
             HTMLEditorField::create('Conclusion', 'Conclusion')
-        ));
+        ), 'Metadata');
 
         return $fields;
     }
