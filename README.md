@@ -1,5 +1,7 @@
 # SilverStripe Charts
 
+[![Build Status](https://travis-ci.org/flashbackzoo/silverstripe-charts.svg?branch=master)](https://travis-ci.org/flashbackzoo/silverstripe-charts)
+
 This module provides a Charts Page pagetype, which can be used to present CSV data, via the [Chart.js](http://www.chartjs.org/) library.
 
 There are currently two supported Chart types, Bar chart, and Pie chart.
