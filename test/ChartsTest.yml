@@ -1,0 +1,25 @@
+Folder:
+  folder1:
+    Name: ChartTest
+File:
+  file1:
+    Title: Chart Data
+    Filename: assests/ChartTest/chartData.csv
+    ParentID: =>Folder.folder1
+Chart:
+  chart1:
+    SortOrder: 1
+    Title: Pie Chart
+    ChartType: pie
+    Description: This is a Pie Chart
+    UploadCsv: =>File.file1
+  chart2:
+    SortOrder: 2
+    Title: Bar Chart
+    ChartType: bar
+    Description: This is a Bar Chart
+    UploadCsv: =>File.file1
+ChartsPage:
+  chartsPage1:
+    Title: Charts Page
+    Charts: =>Chart.chart1, =>Chart.chart2
