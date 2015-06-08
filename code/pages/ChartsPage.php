@@ -46,15 +46,10 @@ class ChartsPage extends Page {
 }
 
 class ChartsPage_Controller extends Page_Controller {
-
     public function init() {
         parent::init();
 
         Requirements::javascript(CHARTS_DIR . "/static/js/dist/main.js");
         Requirements::css(CHARTS_DIR . "/static/css/main.css");
-    }
-
-    public function getCharts() {
-        return $this->Charts();
     }
 }
