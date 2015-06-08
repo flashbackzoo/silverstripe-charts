@@ -42,7 +42,8 @@
     "istanbul": "^0.3.14",
     "jquery": "^2.1.4",
     "mocha": "^2.2.5",
-    "stylus": "^0.51.1"
+    "stylus": "^0.51.1",
+    "tinycolor2": "^1.1.2"
   },
   "browserify": {
     "transform": [
@@ -52,8 +53,5 @@
   "browserify-shim": {
     "node_modules/jquery/dist/jquery.js": "$",
     "node_modules/chart.js/Chart.js": "Chart"
-  },
-  "dependencies": {
-    "tinycolor2": "^1.1.2"
   }
 }
