@@ -12,6 +12,10 @@
         {
             "name": "Ian Herbert",
             "email": "ian@silverstripe.com"
+        },
+        {
+            "name": "Jared Lee",
+            "email": "jared@silverstripe.com"
         }
     ],
     "require": {

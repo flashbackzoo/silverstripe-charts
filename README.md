@@ -17,6 +17,10 @@ NOTE: This module is still in development - so don't use it in production just y
 "undefinedoffset/sortablegridfield": "0.4.3"
 ```
 
+## Installation
+
+`composer require flashbackzoo/silverstripe-charts`
+
 ## Usage
 
 1. Create a Charts Page in the CMS
