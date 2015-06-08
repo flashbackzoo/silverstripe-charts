@@ -55,6 +55,20 @@ class Chart extends DataObject {
         return new RequiredFields('Title', 'ChartType', 'Description', 'UploadCsv');
     }
 
+    /**
+     * Get the cache key for the chart, used for Partial Caching in the template.
+     * The cache should invalidate when the chart's type changes or the data is updated.
+     * @return String - The cache key.
+     */
+    public function getChartCacheKey() {
+        return implode('_', array(
+            'chart',
+            $this->ID,
+            $this->ChartType,
+            strtotime($this->UploadCsv()->LastEdited)
+        ));
+    }
+
     private function getBarChartData() {
         if (!$this->UploadCsv()->ID) {
             return null;

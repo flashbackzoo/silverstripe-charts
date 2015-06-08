@@ -1,3 +1,4 @@
+<% cached $ChartCacheKey %>
 <div class="chart-wrapper">
     <div class="chart-visual">
         <canvas id="$ChartType-$ID" class="chart-type-$ChartType" data-json="$ChartData"></canvas>
@@ -7,3 +8,4 @@
         <div>$Description</div>
     </div>
 </div>
+<% end_cached %>
