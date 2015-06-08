@@ -16,6 +16,15 @@ class Chart extends DataObject {
         'UploadCsv' => 'File',
     );
 
+    /**
+     * The available chart types.
+     * @var Array
+     */
+    private static $chartTypes = array(
+        'bar' => 'Bar Chart',
+        'pie' => 'Pie Chart'
+    );
+
     public static $default_sort = 'SortOrder';
 
     public function getCMSFields() {
@@ -27,11 +36,8 @@ class Chart extends DataObject {
         $chartTypeDropdown = DropdownField::create(
             'ChartType',
             'Chart type',
-            array(
-                'bar' => 'Bar Chart',
-                'pie' => 'Pie Chart'
-            ))
-            ->setEmptyString('(Select one)');
+            self::$chartTypes
+        )->setEmptyString('(Select one)');
 
         $dataUpload = UploadField::create(
             'UploadCsv',
@@ -69,13 +75,12 @@ class Chart extends DataObject {
         ));
     }
 
-    private function getBarChartData() {
-        if (!$this->UploadCsv()->ID) {
-            return null;
-        }
-
-        $parser = new CSVParser($this->UploadCsv()->getFullPath());
-
+    /**
+     * Generates a Bar Chart formatted array from the chart's CSV data.
+     * @param CSVParser
+     * @return Array
+     */
+    private function getBarChartData(CSVParser $parser) {
         $data = array(
             'labels' => array(),
             'datasets' => array(
@@ -84,34 +89,49 @@ class Chart extends DataObject {
         );
 
         foreach ($parser as $row) {
-            $data['labels'][] = $row['Option'];
-            $data['datasets']['data'][] = $row['Count'];
+            $data['labels'][] = (array_key_exists('Option', $row) ? $row['Option'] : '');
+            $data['datasets']['data'][] = (array_key_exists('Count', $row) ? $row['Count'] : '');
         }
 
-        return Convert::raw2xml(json_encode($data));
+        return $data;
     }
 
-    private function getPieChartData() {
-        $parser = new CSVParser($this->UploadCsv()->getFullPath());
-
+    /**
+     * Generates a Pie Chart formatted array from the chart's CSV data.
+     * @param CSVParser
+     * @return Array
+     */
+    private function getPieChartData(CSVParser $parser) {
         $data = array();
 
         foreach ($parser as $row) {
             $data[] = array(
-                'label' => $row['Option'],
-                'value' => $row['Count']
+                'label' => (array_key_exists('Option', $row) ? $row['Option'] : ''),
+                'value' => (array_key_exists('Count', $row) ? $row['Count'] : '')
             );
         }
 
-        return Convert::raw2xml(json_encode($data));
+        return $data;
     }
 
+    /**
+     * Get a JSON encoded string representing the chart's CSV data.
+     * @return String
+     */
     public function getChartData() {
-        if ($this->ChartType == 'bar') {
-            return $this->getBarChartData();
-        } else {
-            return $this->getPieChartData();
+        if (!$this->UploadCsv()->ID) {
+            return '';
         }
+
+        $parser = new CSVParser($this->UploadCsv()->getFullPath());
+
+        if ($this->ChartType == 'bar') {
+            $data = $this->getBarChartData($parser);
+        } else {
+            $data = $this->getPieChartData($parser);
+        }
+
+        return Convert::raw2xml(json_encode($data));
     }
 
 }
