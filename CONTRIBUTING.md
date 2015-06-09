@@ -16,8 +16,12 @@ The main JavaScript for the module is `static/js/src/main.js`
 
 Compile the JavaScript with `npm run build:js`
 
+Watch for changes with `npm run watch:js`
+
 ### CSS
 
 The CSS uses the [Stylus preporcessor](https://learnboost.github.io/stylus/) and is located at `static/styl/main.styl`
 
 Compile the CSS with `npm run build:css`
+
+Watch for changes with `npm run watch:css`
