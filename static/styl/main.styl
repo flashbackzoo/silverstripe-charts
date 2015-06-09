@@ -1,13 +1,40 @@
+chart-background-color = #f3f3f3
+component-padding = 2%
+
 .chart-wrapper
     margin 1.5em 0
+    padding 2em 0
 
     .chart-visual,
     .chart-text
         display inline-block
-        vertical-align middle
+        vertical-align top
 
     .chart-visual
-        padding-right 1em
-    
+        padding-right component-padding
+
+        .even &
+            padding-left component-padding
+            padding-right 0
+
     .chart-text
-        padding-left 1em
+        padding-left component-padding
+
+        .even &
+            padding-left 0
+            padding-right component-padding
+
+.chart-type-pie
+    background-color chart-background-color
+
+    .chart-visual,
+    .chart-text
+        width 46%
+
+.chart-type-bar
+    .chart-visual
+        width 64%
+        background-color chart-background-color
+
+    .chart-text
+        width 31%

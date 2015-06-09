@@ -13854,11 +13854,7 @@ else {
 })();
 
 },{}],4:[function(require,module,exports){
-var $ = require('jquery'),
-    Chart = require('chart.js'),
-    tinycolor = require('tinycolor2');
-
-var constants = {
+module.exports = {
     BAR_DEFAULTS: {
         fillColor: 'rgba(151,187,205,0.5)',
         strokeColor: 'rgba(220,220,220,0.8)',
@@ -13872,31 +13868,63 @@ var constants = {
     PIE_COLOR: 'blue'
 };
 
-// Create the charts
+},{}],5:[function(require,module,exports){
+var $ = require('jquery'),
+    Chart = require('chart.js'),
+    tinycolor = require('tinycolor2'),
+    constants = require('./constants');
 
-var charts = {
-    'chart-type-bar': [],
-    'chart-type-pie': []
-};
+Chart.defaults.global.responsive = true;
 
-$.each($('.chart-type-bar'), function (key, value) {
-    var data = $(this).data('json');
+/**
+ * @func createBarChart
+ * @param {object} canvas - The chart canvas element
+ * @return {object} - Chart.js chart instance
+ */
+function createBarChart(canvas) {
+    var data = $(canvas).data('json');
 
     data.datasets = [$.extend(data.datasets, constants.BAR_DEFAULTS)];
 
-    charts['chart-type-bar'].push(new Chart(this.getContext('2d')).Bar(data, constants.BAR_OPTIONS));
-});
+    return new Chart(canvas.getContext('2d')).Bar(data, constants.BAR_OPTIONS);
+}
 
-$.each($('.chart-type-pie'), function (key, value) {
-    var data = $(this).data('json'),
-        color = tinycolor(constants.PIE_COLOR);
-
+/**
+ * @func colorPieChartSegments
+ * @param {object} data - Object literal representing the chart's data
+ * @return {object} - An updated version of the passed data
+ * @desc Applys incremental color values to each segment of a pie chart's data
+ */
+function colorPieChartSegments(data) {
     $.each(data, function (index, value) {
-        var fill = color.desaturate(index / data.length * 100);
+        var color = tinycolor(constants.PIE_COLOR),
+            fill = color.desaturate(index / data.length * 100);
+
         value = $.extend(value, { color: fill.toRgbString(), highlight: fill.lighten().toRgbString() });
     });
 
-    charts['chart-type-pie'].push(new Chart(this.getContext('2d')).Pie(data));
+    return data;
+}
+
+/**
+ * @func createPieChart
+ * @param {object} canvas - The chart canvas element
+ * @return {object} - Chart.js chart instance
+ */
+function createPieChart(canvas) {
+    var data = $(canvas).data('json');
+
+    chart = new Chart(canvas.getContext('2d')).Pie(colorPieChartSegments(data));
+}
+
+// Create the charts...
+
+$.each($('.chart-type-bar .chart'), function () {
+    createBarChart(this);
 });
 
-},{"chart.js":1,"jquery":2,"tinycolor2":3}]},{},[4]);
+$.each($('.chart-type-pie .chart'), function () {
+    createPieChart(this);
+});
+
+},{"./constants":4,"chart.js":1,"jquery":2,"tinycolor2":3}]},{},[5]);
