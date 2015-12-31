@@ -1,6 +1,7 @@
 <?php
 
-class ChartsPage extends Page {
+class ChartsPage extends Page
+{
 
     private static $description = 'Display your data using Chart.js';
 
@@ -12,7 +13,8 @@ class ChartsPage extends Page {
         'Charts' => 'Chart'
     );
 
-    public function getCMSFields() {
+    public function getCMSFields()
+    {
         $fields = parent::getCMSFields();
 
         $config = GridFieldConfig_RelationEditor::create();
@@ -42,11 +44,12 @@ class ChartsPage extends Page {
 
         return $fields;
     }
-
 }
 
-class ChartsPage_Controller extends Page_Controller {
-    public function init() {
+class ChartsPage_Controller extends Page_Controller
+{
+    public function init()
+    {
         parent::init();
 
         Requirements::javascript(CHARTS_DIR . "/static/js/dist/main.js");

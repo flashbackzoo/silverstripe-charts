@@ -1,6 +1,7 @@
 <?php
 
-class Chart extends DataObject {
+class Chart extends DataObject
+{
 
     private static $description = 'Enter your chart data';
 
@@ -27,7 +28,8 @@ class Chart extends DataObject {
 
     public static $default_sort = 'SortOrder';
 
-    public function getCMSFields() {
+    public function getCMSFields()
+    {
         $fields = parent::getCMSFields();
 
         $fields->removeByName('SortOrder');
@@ -57,7 +59,8 @@ class Chart extends DataObject {
         return $fields;
     }
 
-    public function getCMSValidator() {
+    public function getCMSValidator()
+    {
         return new RequiredFields('Title', 'ChartType', 'Description', 'UploadCsv');
     }
 
@@ -66,7 +69,8 @@ class Chart extends DataObject {
      * The cache should invalidate when the chart's type changes or the data is updated.
      * @return String - The cache key.
      */
-    public function getChartCacheKey() {
+    public function getChartCacheKey()
+    {
         return implode('_', array(
             'chart',
             $this->ID,
@@ -80,7 +84,8 @@ class Chart extends DataObject {
      * @param CSVParser
      * @return Array
      */
-    private function getBarChartData(CSVParser $parser) {
+    private function getBarChartData(CSVParser $parser)
+    {
         $data = array(
             'labels' => array(),
             'datasets' => array(
@@ -101,7 +106,8 @@ class Chart extends DataObject {
      * @param CSVParser
      * @return Array
      */
-    private function getPieChartData(CSVParser $parser) {
+    private function getPieChartData(CSVParser $parser)
+    {
         $data = array();
 
         foreach ($parser as $row) {
@@ -118,7 +124,8 @@ class Chart extends DataObject {
      * Get a JSON encoded string representing the chart's CSV data.
      * @return String
      */
-    public function getChartData() {
+    public function getChartData()
+    {
         if (!$this->UploadCsv()->ID) {
             return '';
         }
@@ -133,5 +140,4 @@ class Chart extends DataObject {
 
         return Convert::raw2xml(json_encode($data));
     }
-
 }
