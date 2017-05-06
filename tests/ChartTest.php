@@ -75,8 +75,8 @@ class ChartTest extends SapphireTest
         $pieChart = $this->objFromFixture('Chart', 'chart1');
         $barChart = $this->objFromFixture('Chart', 'chart2');
 
-        $expectedPieData = '{&quot;label&quot;:&quot;Apple&quot;,&quot;value&quot;:&quot;13&quot;},{&quot;label&quot;:&quot;Banana&quot;,&quot;value&quot;:&quot;3&quot;},{&quot;label&quot;:&quot;Cherry&quot;,&quot;value&quot;:&quot;6&quot;},{&quot;label&quot;:&quot;Grapefruit&quot;,&quot;value&quot;:&quot;3&quot;}';
-        $expectedBarChartData = '{&quot;labels&quot;:[&quot;Apple&quot;,&quot;Banana&quot;,&quot;Cherry&quot;,&quot;Grapefruit&quot;],&quot;datasets&quot;:{&quot;data&quot;:[&quot;13&quot;,&quot;3&quot;,&quot;6&quot;,&quot;3&quot;]}}';
+        $expectedPieData = '{&quot;labels&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;datasets&quot;:[{&quot;backgroundColor&quot;:[],&quot;hoverBackgroundColor&quot;:[],&quot;data&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;]}]}';
+        $expectedBarChartData = '{&quot;labels&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Bar Chart&quot;,&quot;backgroundColor&quot;:[],&quot;hoverBackgroundColor&quot;:[],&quot;borderWidth&quot;:0,&quot;data&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;]}]}';
 
         $this->assertEquals($expectedPieData, $pieChart->getChartData());
         $this->assertEquals($expectedBarChartData, $barChart->getChartData());
