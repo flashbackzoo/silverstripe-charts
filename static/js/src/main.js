@@ -1,49 +1,65 @@
-var $ = require('jquery'),
-    Chart = require('chart.js'),
-    tinycolor = require('tinycolor2'),
-    constants = require('./constants');
+var $ = require('jquery');
+var Chart = require('chart.js');
+var tinycolor = require('tinycolor2');
+var constants = require('./constants');
 
 Chart.defaults.global.responsive = true;
 
 /**
- * @func createBarChart
- * @param {object} canvas - The chart canvas element
- * @return {object} - Chart.js chart instance
+ * Create a bar chart.
+ *
+ * @param {Object} canvas - The chart canvas element.
+ *
+ * @return {Object} - Chart.js chart instance.
  */
 function createBarChart(canvas) {
-    var data = $(canvas).data('json');
+  var data = $(canvas).data('json');
 
-    data.datasets = [$.extend(data.datasets, constants.BAR_DEFAULTS)];
+  // Generate background colors.
+  $.each(data.datasets[0].data, function (index, value) {
+    var color = tinycolor(constants.bar.dataset.backgroundColor);
 
-    return new Chart(canvas.getContext('2d')).Bar(data, constants.BAR_OPTIONS);
+    data.datasets[0].backgroundColor.push(color.toRgbString());
+    data.datasets[0].hoverBackgroundColor.push(color.lighten().toRgbString());
+  });
+
+  return new Chart(
+    canvas.getContext('2d'),
+    {
+      type: 'bar',
+      data: data,
+      options: constants.bar.options,
+    }
+  );
 }
 
 /**
- * @func colorPieChartSegments
- * @param {object} data - Object literal representing the chart's data
- * @return {object} - An updated version of the passed data
- * @desc Applys incremental color values to each segment of a pie chart's data
- */
-function colorPieChartSegments(data) {
-    $.each(data, function (index, value) {
-        var color = tinycolor(constants.PIE_COLOR),
-            fill = color.desaturate(index / data.length * 100);
-
-        value = $.extend(value, { color: fill.toRgbString(), highlight: fill.lighten().toRgbString() });
-    });
-
-    return data;
-}
-
-/**
- * @func createPieChart
- * @param {object} canvas - The chart canvas element
- * @return {object} - Chart.js chart instance
+ * Create a pie chart.
+ *
+ * @param {Object} canvas - The chart canvas element.
+ *
+ * @return {Object} - Chart.js chart instance.
  */
 function createPieChart(canvas) {
-    var data = $(canvas).data('json');
+  var data = $(canvas).data('json');
 
-    chart = new Chart(canvas.getContext('2d')).Pie(colorPieChartSegments(data));
+  // Generate background colors.
+  $.each(data.datasets[0].data, function (index, value) {
+    var color = tinycolor(constants.pie.dataset.backgroundColor);
+    var fill = color.desaturate(index / data.datasets[0].data.length * 100);
+
+    data.datasets[0].backgroundColor.push(fill.toRgbString());
+    data.datasets[0].hoverBackgroundColor.push(fill.lighten().toRgbString());
+  });
+
+  return new Chart(
+    canvas.getContext('2d'),
+    {
+      type: 'pie',
+      data: data,
+      options: constants.pie.options,
+    }
+  );
 }
 
 // Create the charts...

@@ -38,9 +38,9 @@
   },
   "homepage": "https://github.com/flashbackzoo/silverstripe-charts",
   "devDependencies": {
-    "Chart.js": "git://github.com/nnnick/Chart.js#v1.0.2",
     "browserify": "^10.2.3",
     "browserify-shim": "^3.8.8",
+    "chart.js": "^2.5.0",
     "expect.js": "^0.3.1",
     "istanbul": "^0.3.14",
     "jquery": "^2.1.4",

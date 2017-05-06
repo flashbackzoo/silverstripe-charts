@@ -93,13 +93,19 @@ class Chart extends DataObject
         $data = [
             'labels' => [],
             'datasets' => [
-                'data' => [],
+                [
+                    'label' => $this->Title,
+                    'backgroundColor' => [], // Populated on the client-side.
+                    'hoverBackgroundColor' => [], // Populated on the client-side.
+                    'borderWidth' => 0,
+                    'data' => [],
+                ]
             ],
         ];
 
         foreach ($parser as $row) {
             $data['labels'][] = (array_key_exists('Option', $row) ? $row['Option'] : '');
-            $data['datasets']['data'][] = (array_key_exists('Count', $row) ? $row['Count'] : '');
+            $data['datasets'][0]['data'][] = (array_key_exists('Count', $row) ? $row['Count'] : '');
         }
 
         return $data;
@@ -114,13 +120,20 @@ class Chart extends DataObject
      */
     private function getPieChartData(CSVParser $parser)
     {
-        $data = [];
+        $data = [
+            'labels' => [],
+            'datasets' => [
+                [
+                    'backgroundColor' => [], // Populated on the client-side.
+                    'hoverBackgroundColor' => [], // Populated on the client-side.
+                    'data' => [],
+                ],
+            ],
+        ];
 
         foreach ($parser as $row) {
-            $data[] = [
-                'label' => (array_key_exists('Option', $row) ? $row['Option'] : ''),
-                'value' => (array_key_exists('Count', $row) ? $row['Count'] : '')
-            ];
+            $data['labels'][] = (array_key_exists('Option', $row) ? $row['Option'] : '');
+            $data['datasets'][0]['data'][] = (array_key_exists('Count', $row) ? $row['Count'] : '');
         }
 
         return $data;
