@@ -4,8 +4,8 @@
 
 Charts get their data from a CVS which you upload when creating a chart. The CSV requires the following column headings:
 
-- Option: Used for labels
-- Count: Used for totals
+- Label: Used for labels
+- Value: Used for totals
 
 If your CSV includes other columns, that's fine, they will just be ignored.
 
