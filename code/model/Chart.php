@@ -104,8 +104,8 @@ class Chart extends DataObject
         ];
 
         foreach ($parser as $row) {
-            $data['labels'][] = (array_key_exists('Option', $row) ? $row['Option'] : '');
-            $data['datasets'][0]['data'][] = (array_key_exists('Count', $row) ? $row['Count'] : '');
+            $data['labels'][] = (array_key_exists('Label', $row) ? $row['Label'] : '');
+            $data['datasets'][0]['data'][] = (array_key_exists('Value', $row) ? $row['Value'] : '');
         }
 
         return $data;
@@ -132,8 +132,8 @@ class Chart extends DataObject
         ];
 
         foreach ($parser as $row) {
-            $data['labels'][] = (array_key_exists('Option', $row) ? $row['Option'] : '');
-            $data['datasets'][0]['data'][] = (array_key_exists('Count', $row) ? $row['Count'] : '');
+            $data['labels'][] = (array_key_exists('Label', $row) ? $row['Label'] : '');
+            $data['datasets'][0]['data'][] = (array_key_exists('Value', $row) ? $row['Value'] : '');
         }
 
         return $data;

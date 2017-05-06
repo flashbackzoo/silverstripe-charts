@@ -12,7 +12,7 @@ If your CSV includes other columns, that's fine, they will just be ignored.
 Here is an example of a valid CSV file:
 
 ```
-"Option","Count"
+"Label","Value"
 "Apple",13
 "Banana",3
 "Cherry",6
