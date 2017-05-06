@@ -75,7 +75,7 @@ class ChartTest extends SapphireTest
         $pieChart = $this->objFromFixture('Chart', 'chart1');
         $barChart = $this->objFromFixture('Chart', 'chart2');
 
-        $expectedPieData = '[{&quot;label&quot;:&quot;Apple&quot;,&quot;value&quot;:&quot;13&quot;},{&quot;label&quot;:&quot;Banana&quot;,&quot;value&quot;:&quot;3&quot;},{&quot;label&quot;:&quot;Cherry&quot;,&quot;value&quot;:&quot;6&quot;},{&quot;label&quot;:&quot;Grapefruit&quot;,&quot;value&quot;:&quot;3&quot;}]';
+        $expectedPieData = '{&quot;label&quot;:&quot;Apple&quot;,&quot;value&quot;:&quot;13&quot;},{&quot;label&quot;:&quot;Banana&quot;,&quot;value&quot;:&quot;3&quot;},{&quot;label&quot;:&quot;Cherry&quot;,&quot;value&quot;:&quot;6&quot;},{&quot;label&quot;:&quot;Grapefruit&quot;,&quot;value&quot;:&quot;3&quot;}';
         $expectedBarChartData = '{&quot;labels&quot;:[&quot;Apple&quot;,&quot;Banana&quot;,&quot;Cherry&quot;,&quot;Grapefruit&quot;],&quot;datasets&quot;:{&quot;data&quot;:[&quot;13&quot;,&quot;3&quot;,&quot;6&quot;,&quot;3&quot;]}}';
 
         $this->assertEquals($expectedPieData, $pieChart->getChartData());

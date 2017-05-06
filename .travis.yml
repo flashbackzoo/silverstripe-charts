@@ -15,4 +15,4 @@ before_script:
   - cd ~/builds/ss
 
 script:
-  - vendor/bin/phpunit silverstripe-charts/test/
+  - vendor/bin/phpunit silverstripe-charts/tests/
