@@ -6,7 +6,7 @@ class Chart extends DataObject
 
     private static $db = [
         'SortOrder'=>'Int',
-        'Title' => 'Varchar',
+        'Title' => 'Varchar(255)',
         'ChartType' => 'Varchar',
     ];
 
