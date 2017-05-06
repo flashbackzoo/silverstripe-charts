@@ -2,29 +2,28 @@
 
 class Chart extends DataObject
 {
-
     private static $description = 'Enter your chart data';
 
-    private static $db = array(
+    private static $db = [
         'SortOrder'=>'Int',
         'Title' => 'Varchar',
         'ChartType' => 'Varchar',
-        'Description' => 'HTMLText',
-    );
+    ];
 
-    private static $has_one = array(
-        'ChartsPage' => 'ChartsPage',
+    private static $has_one = [
+        'Page' => 'Page',
         'UploadCsv' => 'File',
-    );
+    ];
 
     /**
      * The available chart types.
-     * @var Array
+     *
+     * @var array
      */
-    private static $chartTypes = array(
+    private static $chartTypes = [
         'bar' => 'Bar Chart',
-        'pie' => 'Pie Chart'
-    );
+        'pie' => 'Pie Chart',
+    ];
 
     public static $default_sort = 'SortOrder';
 
@@ -33,65 +32,70 @@ class Chart extends DataObject
         $fields = parent::getCMSFields();
 
         $fields->removeByName('SortOrder');
-        $fields->removeByName('ChartsPageID');
+        $fields->removeByName('PageID');
 
         $chartTypeDropdown = DropdownField::create(
             'ChartType',
             'Chart type',
             self::$chartTypes
-        )->setEmptyString('(Select one)');
+        )
+        ->setEmptyString('(Select one)');
 
         $dataUpload = UploadField::create(
             'UploadCsv',
-            'Chart data')
-            ->setDescription('CSV data for the chart');
-        $dataUpload->allowedExtensions = array('csv');
+            'Chart data'
+        )
+        ->setDescription('CSV data for the chart');
 
-        $description = HTMLEditorField::create('Description', 'Description');
+        $dataUpload->allowedExtensions = ['csv'];
 
-        $fields->addFieldsToTab('Root.Main', array(
-            $chartTypeDropdown,
-            $description
-        ));
+        $fields->addFieldsToTab(
+            'Root.Main',
+            [
+                $chartTypeDropdown,
+                $dataUpload,
+            ]
+        );
 
-        $fields->addFieldToTab('Root.Main', $dataUpload, 'Description');
+        if ($this->ID) {
+            $fields->addFieldToTab(
+                'Root.Main',
+                ReadonlyField::create(
+                    'Shortcode',
+                    'Shortcode',
+                    "[chart,id='{$this->ID}']"
+                ),
+                'Title'
+            );
+        }
 
         return $fields;
     }
 
     public function getCMSValidator()
     {
-        return new RequiredFields('Title', 'ChartType', 'Description', 'UploadCsv');
-    }
-
-    /**
-     * Get the cache key for the chart, used for Partial Caching in the template.
-     * The cache should invalidate when the chart's type changes or the data is updated.
-     * @return String - The cache key.
-     */
-    public function getChartCacheKey()
-    {
-        return implode('_', array(
-            'chart',
-            $this->ID,
-            $this->ChartType,
-            strtotime($this->UploadCsv()->LastEdited)
-        ));
+        return RequiredFields::create(
+            'Title',
+            'ChartType',
+            'UploadCsv'
+        );
     }
 
     /**
      * Generates a Bar Chart formatted array from the chart's CSV data.
+     *
      * @param CSVParser
-     * @return Array
+     *
+     * @return array
      */
     private function getBarChartData(CSVParser $parser)
     {
-        $data = array(
-            'labels' => array(),
-            'datasets' => array(
-                'data' => array()
-            )
-        );
+        $data = [
+            'labels' => [],
+            'datasets' => [
+                'data' => [],
+            ],
+        ];
 
         foreach ($parser as $row) {
             $data['labels'][] = (array_key_exists('Option', $row) ? $row['Option'] : '');
@@ -103,18 +107,20 @@ class Chart extends DataObject
 
     /**
      * Generates a Pie Chart formatted array from the chart's CSV data.
+     *
      * @param CSVParser
-     * @return Array
+     *
+     * @return array
      */
     private function getPieChartData(CSVParser $parser)
     {
-        $data = array();
+        $data = [];
 
         foreach ($parser as $row) {
-            $data[] = array(
+            $data[] = [
                 'label' => (array_key_exists('Option', $row) ? $row['Option'] : ''),
                 'value' => (array_key_exists('Count', $row) ? $row['Count'] : '')
-            );
+            ];
         }
 
         return $data;
@@ -122,7 +128,8 @@ class Chart extends DataObject
 
     /**
      * Get a JSON encoded string representing the chart's CSV data.
-     * @return String
+     *
+     * @return string
      */
     public function getChartData()
     {

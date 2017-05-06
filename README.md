@@ -13,38 +13,16 @@ NOTE: This module is still in development - so don't use it in production just y
 ## Requirements
 
 ```
-"php": ">=5.3.2",
+"php": ">=5.6",
 "silverstripe/framework": "~3.1",
 "silverstripe/cms": "~3.1",
 "undefinedoffset/sortablegridfield": "0.4.3"
 ```
 
-## Installation
+## Documentation
 
-`composer require flashbackzoo/silverstripe-charts`
-
-## Usage
-
-1. Create a Charts Page in the CMS
-2. Add a Chart via the GridField
-3. Publish your page
-
-Charts get their data from the CVS file you upload at Step 2. The CSV requires the following column headings:
-
-- Option: Used for labels
-- Count: Used for totals
-
-If your CSV includes other columns, that's fine, they will just be ignored.
-
-Here is an example of a valid CSV file:
-
-```
-"Option","Count"
-"Apple",13
-"Banana",3
-"Cherry",6
-"Grapefruit",3
-```
+* [Developer docs](docs/en/index.md)
+* [User guide](docs/en/user-guide.md)
 
 ## Contributing
 

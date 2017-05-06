@@ -6,11 +6,8 @@
   "scripts": {
     "test": "mocha",
     "coverage": "istanbul cover --report html _mocha --",
-    "build:js": "browserify static/js/src/main.js > static/js/dist/main.js",
-    "build:css": "stylus --compress static/styl/main.styl --out static/css/main.css",
-    "build": "npm run build:js && npm run build:css",
-    "watch:js": "watchify static/js/src/main.js -o static/js/dist/main.js",
-    "watch:css": "stylus --watch static/styl/main.styl --compress static/styl/main.styl --out static/css/main.css"
+    "build": "browserify static/js/src/main.js > static/js/dist/main.js",
+    "build:watch": "watchify static/js/src/main.js -o static/js/dist/main.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +21,7 @@
   "contributors": [
     {
       "name": "David Craig",
-      "email": "david@silverstripe.com"
+      "email": "david@davidcraig.co.nz"
     },
     {
       "name": "Ian Herbert",
@@ -48,7 +45,6 @@
     "istanbul": "^0.3.14",
     "jquery": "^2.1.4",
     "mocha": "^2.2.5",
-    "stylus": "^0.51.1",
     "tinycolor2": "^1.1.2",
     "watchify": "^3.2.2"
   },

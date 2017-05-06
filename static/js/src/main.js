@@ -48,10 +48,10 @@ function createPieChart(canvas) {
 
 // Create the charts...
 
-$.each($('.chart-type-bar .chart'), function () {
+$.each($('.chart--bar .chart__canvas'), function () {
     createBarChart(this);
 });
 
-$.each($('.chart-type-pie .chart'), function () {
+$.each($('.chart--pie .chart__canvas'), function () {
     createPieChart(this);
 });
