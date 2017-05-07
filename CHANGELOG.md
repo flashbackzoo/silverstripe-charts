@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.0
+
+* Add multiple dataset support
+* Data can be imported from CSV and managed using a GridField.
+
 ## 2.0
 
 * Minimum PHP version 5.6
