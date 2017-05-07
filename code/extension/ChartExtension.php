@@ -28,7 +28,7 @@ class ChartExtension extends DataExtension
                 GridField::create(
                     'Charts',
                     'Charts',
-                    $this->getComponents('Charts'),
+                    $this->owner->getComponents('Charts'),
                     $config
                 ),
             ]

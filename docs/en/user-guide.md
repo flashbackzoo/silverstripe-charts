@@ -1,38 +1,28 @@
 # User Guide
 
-## Chart Data
-
-Charts get their data from a CVS which you upload when creating a chart. The CSV requires the following column headings:
-
-- Label: Used for labels
-- Value: Used for totals
-
-If your CSV includes other columns, that's fine, they will just be ignored.
-
-Here is an example of a valid CSV file:
-
-```
-"Label","Value"
-"Apple",13
-"Banana",3
-"Cherry",6
-"Grapefruit",3
-```
-
 ## Creating a chart
 
-In the CMS, navigate to the page where you want the chart to appear, then select the "Charts" tab.
+In the CMS, navigate to the page where you want the chart to appear, and select the "Charts" tab.
 
 ![Chart Page](../images/user-guide-chart-page.png)
 
-Click the "Add Chart" button then fill in the fields provided.
+Each chart can have one or more datasets. Click the "Add Dataset" button to add a dataset.
 
 ![Add Chart](../images/user-guide-add-chart.png)
 
-Once you have created your chart, copy the shortcode highlighted above.
+You can add data to you dataset in two ways:
 
-![Add Chart](../images/user-guide-paste-shortcode.png)
+1. Use the "Add Data" button to add data one-by-one.
+2. Use the "Import CSV" button to import data from a CSV file.
 
-Paste the shortcode into a content area, where you want the chart to appear on the page.
+When importing data from CSV, you can choose which columns are mapped to "label" and "value" in the CMS, so don't worry if your data doesn't have these columns.
 
-Save the page and your chart will appear.
+![Edit Dataset](../images/user-guide-dataset.png)
+
+Once you've finished adding data, navigate back to the chart view, and copy the shortcode.
+
+![Copy Shortcode](../images/user-guide-shortcode.png)
+
+Paste the shortcode into a content area, save the page, and your chart will appear on the page.
+
+![Copy Shortcode](../images/user-guide-shortcode-paste.png)
