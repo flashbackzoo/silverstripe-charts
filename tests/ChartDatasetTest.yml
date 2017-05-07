@@ -11,6 +11,7 @@ ChartData:
     SortOrder: 2
     Label: 'Cherry'
     Value: 5
+    Color: 'FF5722'
   Grapefruit:
     SortOrder: 3
     Label: 'Grapefruit'
@@ -20,4 +21,5 @@ ChartDataset:
   Fruit:
     SortOrder: 0
     Label: 'Units'
+    Color: '2196f3'
     DataRows: =>ChartData.Apple, =>ChartData.Banana, =>ChartData.Cherry, =>ChartData.Grapefruit

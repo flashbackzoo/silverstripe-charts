@@ -30,11 +30,23 @@ class ChartDatasetTest extends SapphireTest
         $data = $dataset->getChartDataset();
 
         $this->assertArrayHasKey('label', $data);
-        $this->assertArrayHasKey('data', $data);
         $this->assertEquals($data['label'], 'Units');
+
+        $this->assertArrayHasKey('data', $data);
+        $this->assertEquals(4, count($data['data']));
         $this->assertEquals($data['data'][0], 7);
         $this->assertEquals($data['data'][1], 3);
         $this->assertEquals($data['data'][2], 5);
         $this->assertEquals($data['data'][3], 1);
+
+        $this->assertArrayHasKey('backgroundColor', $data);
+        $this->assertEquals(4, count($data['backgroundColor']));
+        $this->assertEquals($data['backgroundColor'][0], '#2196f3');
+        $this->assertEquals($data['backgroundColor'][1], '#2196f3');
+        $this->assertEquals($data['backgroundColor'][2], '#FF5722');
+        $this->assertEquals($data['backgroundColor'][3], '#2196f3');
+
+        $this->assertArrayHasKey('hoverBackgroundColor', $data);
+        $this->assertEquals(4, count($data['hoverBackgroundColor']));
     }
 }

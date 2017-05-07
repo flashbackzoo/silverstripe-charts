@@ -45,7 +45,6 @@
     "istanbul": "^0.3.14",
     "jquery": "^2.1.4",
     "mocha": "^2.2.5",
-    "tinycolor2": "^1.1.2",
     "watchify": "^3.2.2"
   },
   "browserify": {

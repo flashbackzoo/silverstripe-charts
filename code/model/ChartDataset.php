@@ -10,6 +10,7 @@ class ChartDataset extends DataObject
     private static $db = [
         'SortOrder'=>'Int',
         'Label' => 'Varchar(255)',
+        'Color' => 'Color',
     ];
 
     private static $has_one = [
@@ -19,6 +20,11 @@ class ChartDataset extends DataObject
     private static $has_many = [
         'DataRows' => 'ChartData',
     ];
+
+    /**
+     * @config
+     */
+    private static $background_color = '2196f3';
 
     public static $summary_fields = [
         'Label',
@@ -33,6 +39,11 @@ class ChartDataset extends DataObject
         $fields->removeByName('SortOrder');
         $fields->removeByName('ChartID');
         $fields->removeByName('DataRows');
+
+        $fields->addFieldToTab(
+            'Root.Main',
+            ColorField::create('Color', 'Color')
+        );
 
         if ($this->getField('ID')) {
             $config = GridFieldConfig_RecordEditor::create();
@@ -80,6 +91,15 @@ class ChartDataset extends DataObject
         return $this->getField('Label');
     }
 
+    protected function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+
+        if (!$this->getField('Color')) {
+            $this->setField('Color', $this->config()->background_color);
+        }
+    }
+
     protected function onAfterDelete()
     {
         parent::onAfterDelete();
@@ -117,6 +137,8 @@ class ChartDataset extends DataObject
     public function getChartDataset()
     {
         $chartDataset = [
+            'backgroundColor' => [],
+            'hoverBackgroundColor' => [],
             'label' => $this->getField('Label'),
             'data' => [],
         ];
@@ -124,7 +146,18 @@ class ChartDataset extends DataObject
         $rows = $this->getComponents('DataRows');
 
         if ($rows->count()) {
-            $chartDataset['data'] = $rows->Column('Value');
+            $datasetBg = $this->obj('Color');
+            $datasetBgValue = $datasetBg->getValue();
+
+            foreach ($rows as $row) {
+                $rowBg = $row->obj('Color');
+                $rowBgValue = $rowBg->getValue();
+
+                $chartDataset['backgroundColor'][] = ($rowBgValue ? "#{$rowBgValue}" : "#{$datasetBgValue}");
+                $chartDataset['hoverBackgroundColor'][] = ($rowBgValue ? "#{$rowBg->Blend(0.8)}" : "#{$datasetBg->Blend(0.8)}");
+
+                $chartDataset['data'][] = $row->getField('Value');
+            }
         }
 
         $this->extend('updateChartDataset', $chartDataset);
