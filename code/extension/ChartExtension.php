@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @package SilverStripeCharts
+ */
 class ChartExtension extends DataExtension
 {
     /**
@@ -15,17 +18,9 @@ class ChartExtension extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
-        $config = GridFieldConfig_RelationEditor::create();
-        $config->removeComponentsByType('GridFieldAddExistingAutocompleter');
-        $config->removeComponentsByType('GridFieldSortableHeader');
+        $config = GridFieldConfig_RecordEditor::create();
         $config->removeComponentsByType('GridFieldDeleteAction');
         $config->addComponent(new GridFieldSortableRows('SortOrder'));
-
-        $config
-            ->getComponentByType('GridFieldDataColumns')
-            ->setDisplayFields([
-                'Title' => 'Title',
-            ]);
 
         $fields->addFieldsToTab(
             'Root.Charts',
@@ -33,7 +28,7 @@ class ChartExtension extends DataExtension
                 GridField::create(
                     'Charts',
                     'Charts',
-                    $this->owner->Charts(),
+                    $this->getComponents('Charts'),
                     $config
                 ),
             ]
@@ -54,8 +49,8 @@ class ChartExtension extends DataExtension
         Requirements::javascript(CHARTS_DIR . '/static/js/dist/main.js');
 
         return ArrayData::create([
-                'ChartID' => $chart->ID,
-                'ChartType' => $chart->ChartType,
+                'ChartID' => $chart->getField('ID'),
+                'ChartType' => $chart->getField('ChartType'),
                 'ChartData' => $chart->getChartData(),
             ])
             ->renderWith('ChartComponent');

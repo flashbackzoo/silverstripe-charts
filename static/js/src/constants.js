@@ -1,8 +1,10 @@
 module.exports = {
-  bar: {
+  default: {
     dataset: {
       backgroundColor: 'rgba(33,150,243,1)',
     },
+  },
+  bar: {
     options: {
       scales: {
         yAxes: [
@@ -17,9 +19,6 @@ module.exports = {
     },
   },
   pie: {
-    dataset: {
-      backgroundColor: 'rgba(33,150,243,1)',
-    },
     options: {},
   },
 };

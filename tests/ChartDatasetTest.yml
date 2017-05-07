@@ -1,14 +1,18 @@
 ChartData:
   Apple:
+    SortOrder: 0
     Label: 'Apple'
     Value: 7
   Banana:
+    SortOrder: 1
     Label: 'Banana'
     Value: 3
   Cherry:
+    SortOrder: 2
     Label: 'Cherry'
     Value: 5
   Grapefruit:
+    SortOrder: 3
     Label: 'Grapefruit'
     Value: 1
 
@@ -17,10 +21,3 @@ ChartDataset:
     SortOrder: 0
     Label: 'Units'
     DataRows: =>ChartData.Apple, =>ChartData.Banana, =>ChartData.Cherry, =>ChartData.Grapefruit
-
-Chart:
-  Bar:
-    SortOrder: 0
-    Title: 'My Bar Chart'
-    ChartType: 'bar'
-    Datasets: =>ChartDataset.Fruit

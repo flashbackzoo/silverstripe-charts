@@ -6,6 +6,29 @@ var constants = require('./constants');
 Chart.defaults.global.responsive = true;
 
 /**
+ * Generate fill colors for the chart.
+ *
+ * @param {Object} dataset
+ *
+ * @return {Object}
+ */
+function generateBackgroundColor(dataset) {
+  var generated = {
+    backgroundColor: [],
+    hoverBackgroundColor: [],
+  };
+
+  $.each(dataset.data, function (index, data) {
+    var color = tinycolor(constants.default.dataset.backgroundColor);
+
+    generated.backgroundColor.push(color.toRgbString());
+    generated.hoverBackgroundColor.push(color.lighten().toRgbString());
+  });
+
+  return $.extend({}, dataset, generated);
+}
+
+/**
  * Create a bar chart.
  *
  * @param {Object} canvas - The chart canvas element.
@@ -16,11 +39,8 @@ function createBarChart(canvas) {
   var data = $(canvas).data('json');
 
   // Generate background colors.
-  $.each(data.datasets[0].data, function (index, value) {
-    var color = tinycolor(constants.bar.dataset.backgroundColor);
-
-    data.datasets[0].backgroundColor.push(color.toRgbString());
-    data.datasets[0].hoverBackgroundColor.push(color.lighten().toRgbString());
+  $.each(data.datasets, function (index, dataset) {
+    data.datasets[index] = generateBackgroundColor(dataset);
   });
 
   return new Chart(
@@ -44,12 +64,8 @@ function createPieChart(canvas) {
   var data = $(canvas).data('json');
 
   // Generate background colors.
-  $.each(data.datasets[0].data, function (index, value) {
-    var color = tinycolor(constants.pie.dataset.backgroundColor);
-    var fill = color.desaturate(index / data.datasets[0].data.length * 100);
-
-    data.datasets[0].backgroundColor.push(fill.toRgbString());
-    data.datasets[0].hoverBackgroundColor.push(fill.lighten().toRgbString());
+  $.each(data.datasets, function (index, dataset) {
+    data.datasets[index] = generateBackgroundColor(dataset);
   });
 
   return new Chart(

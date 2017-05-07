@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @package SilverStripeCharts
+ */
 class Chart extends DataObject
 {
     private static $description = 'Enter your chart data';
@@ -12,7 +15,10 @@ class Chart extends DataObject
 
     private static $has_one = [
         'Page' => 'Page',
-        'UploadCsv' => 'File',
+    ];
+
+    private static $has_many = [
+        'Datasets' => 'ChartDataset',
     ];
 
     /**
@@ -33,27 +39,19 @@ class Chart extends DataObject
 
         $fields->removeByName('SortOrder');
         $fields->removeByName('PageID');
+        $fields->removeByName('Datasets');
 
         $chartTypeDropdown = DropdownField::create(
             'ChartType',
-            'Chart type',
+            'Type',
             self::$chartTypes
         )
-        ->setEmptyString('(Select one)');
-
-        $dataUpload = UploadField::create(
-            'UploadCsv',
-            'Chart data'
-        )
-        ->setDescription('CSV data for the chart');
-
-        $dataUpload->allowedExtensions = ['csv'];
+        ->setEmptyString('Select...');
 
         $fields->addFieldsToTab(
             'Root.Main',
             [
                 $chartTypeDropdown,
-                $dataUpload,
             ]
         );
 
@@ -63,9 +61,28 @@ class Chart extends DataObject
                 ReadonlyField::create(
                     'Shortcode',
                     'Shortcode',
-                    "[chart,id='{$this->ID}']"
+                    "[chart,id='{$this->getField('ID')}']"
                 ),
                 'Title'
+            );
+
+            $config = GridFieldConfig_RecordEditor::create();
+            $config->removeComponentsByType('GridFieldFilterHeader');
+            $config->removeComponentsByType('GridFieldSortableHeader');
+            $config->removeComponentsByType('GridFieldDeleteAction');
+            $config->addComponent(new GridFieldSortableRows('SortOrder'));
+            $config
+                ->getComponentByType('GridFieldAddNewButton')
+                ->setButtonName('Add Dataset');
+
+            $fields->addFieldToTab(
+                'Root.Main',
+                GridField::create(
+                    'Datasets',
+                    'Datasets',
+                    $this->getComponents('Datasets'),
+                    $config
+                )
             );
         }
 
@@ -76,67 +93,17 @@ class Chart extends DataObject
     {
         return RequiredFields::create(
             'Title',
-            'ChartType',
-            'UploadCsv'
+            'ChartType'
         );
     }
 
-    /**
-     * Generates a Bar Chart formatted array from the chart's CSV data.
-     *
-     * @param CSVParser
-     *
-     * @return array
-     */
-    private function getBarChartData(CSVParser $parser)
+    protected function onAfterDelete()
     {
-        $data = [
-            'labels' => [],
-            'datasets' => [
-                [
-                    'label' => $this->Title,
-                    'backgroundColor' => [], // Populated on the client-side.
-                    'hoverBackgroundColor' => [], // Populated on the client-side.
-                    'borderWidth' => 0,
-                    'data' => [],
-                ]
-            ],
-        ];
+        parent::onAfterDelete();
 
-        foreach ($parser as $row) {
-            $data['labels'][] = (array_key_exists('Label', $row) ? $row['Label'] : '');
-            $data['datasets'][0]['data'][] = (array_key_exists('Value', $row) ? $row['Value'] : '');
+        foreach ($this->getComponents('Datasets') as $dataset) {
+            $dataset->delete();
         }
-
-        return $data;
-    }
-
-    /**
-     * Generates a Pie Chart formatted array from the chart's CSV data.
-     *
-     * @param CSVParser
-     *
-     * @return array
-     */
-    private function getPieChartData(CSVParser $parser)
-    {
-        $data = [
-            'labels' => [],
-            'datasets' => [
-                [
-                    'backgroundColor' => [], // Populated on the client-side.
-                    'hoverBackgroundColor' => [], // Populated on the client-side.
-                    'data' => [],
-                ],
-            ],
-        ];
-
-        foreach ($parser as $row) {
-            $data['labels'][] = (array_key_exists('Label', $row) ? $row['Label'] : '');
-            $data['datasets'][0]['data'][] = (array_key_exists('Value', $row) ? $row['Value'] : '');
-        }
-
-        return $data;
     }
 
     /**
@@ -146,18 +113,23 @@ class Chart extends DataObject
      */
     public function getChartData()
     {
-        if (!$this->UploadCsv()->ID) {
-            return '';
+        $chartData = [
+            'labels' => [],
+            'datasets' => [],
+        ];
+
+        $datasets = $this->getComponents('Datasets');
+
+        if ($datasets->count()) {
+            $chartData['labels'] = $datasets->first()->getChartLabels();
+
+            foreach ($datasets as $dataset) {
+                $chartData['datasets'][] = $dataset->getChartDataset();
+            }
         }
 
-        $parser = new CSVParser($this->UploadCsv()->getFullPath());
+        $this->extend('updateChartData', $chartData);
 
-        if ($this->ChartType == 'bar') {
-            $data = $this->getBarChartData($parser);
-        } else {
-            $data = $this->getPieChartData($parser);
-        }
-
-        return Convert::raw2xml(json_encode($data));
+        return Convert::raw2xml(json_encode($chartData));
     }
 }
