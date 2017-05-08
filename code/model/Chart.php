@@ -28,6 +28,7 @@ class Chart extends DataObject
      */
     private static $chartTypes = [
         'bar' => 'Bar Chart',
+        'doughnut' => 'Doughnut Chart',
         'pie' => 'Pie Chart',
     ];
 
