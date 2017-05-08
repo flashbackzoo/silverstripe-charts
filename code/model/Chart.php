@@ -114,18 +114,53 @@ class Chart extends DataObject
     public function getChartData()
     {
         $chartData = [
-            'labels' => [],
-            'datasets' => [],
+            'type' => $this->getField('ChartType'),
+            'data' => [
+                'labels' => [],
+                'datasets' => [],
+            ],
         ];
 
         $datasets = $this->getComponents('Datasets');
 
+        // Populate the data.
         if ($datasets->count()) {
-            $chartData['labels'] = $datasets->first()->getChartLabels();
+            $chartData['data']['labels'] = $datasets->first()->getChartLabels();
 
             foreach ($datasets as $dataset) {
-                $chartData['datasets'][] = $dataset->getChartDataset();
+                $chartData['data']['datasets'][] = $dataset->getChartDataset();
             }
+        }
+
+        // Set some default options.
+        switch ($chartData['type']) {
+            case 'bar':
+                $chartData['options'] = [
+                    'responsive' => true,
+                    'scales' => [
+                        'yAxes' => [
+                            [
+                                'ticks' => [
+                                    'beginAtZero' => true,
+                                    'min' => 0,
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+                break;
+
+            case 'pie':
+                $chartData['options'] = [
+                    'responsive' => true,
+                ];
+                break;
+
+            default:
+                $chartData['options'] = [
+                    'responsive' => true,
+                ];
+                break;
         }
 
         $this->extend('updateChartData', $chartData);

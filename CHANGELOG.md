@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2
+
+* Make charts extendable.
+
 ## 3.1
 
 * Add color picker to ChartDataset and ChartData
