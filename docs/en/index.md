@@ -11,7 +11,7 @@ Extend any `Page` with `ChartExtension`
 ```yml
 Page:
   extensions:
-    - ChartExtension
+    - flashbackzoo\SilverStripeCharts\ChartExtension
 ```
 
 This provides a "Charts" tab on pages, where CMS users can create either bar or pie charts.
@@ -32,12 +32,14 @@ ChartDataset:
 You can pass custom options to your charts by creating an extension.
 
 ```yml
-Chart:
+flashbackzoo\SilverStripeCharts\Chart:
   extensions:
     - MyChartExtension
 ```
 
 ```php
+use SilverStripe\ORM\DataExtension;
+
 class MyChartExtension extends DataExtension
 {
     public function updateChartData(&$chartData)

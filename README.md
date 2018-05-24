@@ -8,13 +8,13 @@ Upload CSV files and present the data as [chart.js](http://www.chartjs.org/) cha
 
 ## Requirements
 
-* PHP ~5.6
-* SilverStripe ~3.2
+* PHP ^7.1
+* SilverStripe ^4.0
 
 ## Documentation
 
 * [Developer docs](docs/en/index.md)
-* [User guide](docs/en/user-guide.md)
+* [User guide](docs/en/userguide.md)
 
 ## Contributing
 

@@ -1,12 +1,18 @@
 <?php
 
+namespace flashbackzoo\SilverStripeCharts;
+
+use SilverStripe\Forms\RequiredFields;
+use SilverStripe\ORM\DataObject;
+use TractorCow\Colorpicker\Forms\ColorField;
+
 /**
- * @package SilverStripeCharts
- *
  * A row of data belonging to a {@link ChartDataset}.
  */
 class ChartData extends DataObject
 {
+    private static $table_name = 'ChartData';
+
     private static $db = [
         'SortOrder'=>'Int',
         'Label' => 'Varchar(255)',
@@ -15,15 +21,15 @@ class ChartData extends DataObject
     ];
 
     private static $has_one = [
-        'Dataset' => 'ChartDataset',
+        'Dataset' => ChartDataset::class,
     ];
 
-    public static $summary_fields = [
+    private static $summary_fields = [
         'Label',
         'Value',
     ];
 
-    public static $default_sort = 'SortOrder';
+    private static $default_sort = 'SortOrder';
 
     public function getCMSFields()
     {

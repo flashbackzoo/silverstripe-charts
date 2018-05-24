@@ -1,10 +1,20 @@
 <?php
 
-/**
- * @package SilverStripeCharts
- */
+namespace flashbackzoo\SilverStripeCharts;
+
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Forms\RequiredFields;
+use SilverStripe\ORM\DataObject;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+
 class Chart extends DataObject
 {
+    private static $table_name = 'Chart';
+
     private static $description = 'Enter your chart data';
 
     private static $db = [
@@ -18,7 +28,7 @@ class Chart extends DataObject
     ];
 
     private static $has_many = [
-        'Datasets' => 'ChartDataset',
+        'Datasets' => ChartDataset::class,
     ];
 
     /**
@@ -32,7 +42,7 @@ class Chart extends DataObject
         'pie' => 'Pie Chart',
     ];
 
-    public static $default_sort = 'SortOrder';
+    private static $default_sort = 'SortOrder';
 
     public function getCMSFields()
     {
@@ -71,9 +81,9 @@ class Chart extends DataObject
             $config->removeComponentsByType('GridFieldFilterHeader');
             $config->removeComponentsByType('GridFieldSortableHeader');
             $config->removeComponentsByType('GridFieldDeleteAction');
-            $config->addComponent(new GridFieldSortableRows('SortOrder'));
+            $config->addComponent(new GridFieldOrderableRows('SortOrder'));
             $config
-                ->getComponentByType('GridFieldAddNewButton')
+                ->getComponentByType(GridFieldAddNewButton::class)
                 ->setButtonName('Add Dataset');
 
             $fields->addFieldToTab(
@@ -166,6 +176,6 @@ class Chart extends DataObject
 
         $this->extend('updateChartData', $chartData);
 
-        return Convert::raw2xml(json_encode($chartData));
+        return json_encode($chartData);
     }
 }

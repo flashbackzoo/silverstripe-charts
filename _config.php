@@ -1,5 +1,5 @@
 <?php
 
-define('CHARTS_DIR', basename(__DIR__));
+use SilverStripe\View\Parsers\ShortcodeParser;
 
-ShortcodeParser::get('default')->register('chart', ['ChartExtension', 'chartShortcodeHandler']);
+ShortcodeParser::get('default')->register('chart', ['flashbackzoo\SilverStripeCharts\ChartExtension', 'chartShortcodeHandler']);

@@ -1,8 +1,15 @@
 <?php
 
-/**
- * @package SilverStripeCharts
- */
+namespace flashbackzoo\SilverStripeCharts;
+
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\View\ArrayData;
+use SilverStripe\View\Requirements;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+
 class ChartExtension extends DataExtension
 {
     /**
@@ -13,14 +20,14 @@ class ChartExtension extends DataExtension
     ];
 
     private static $has_many = [
-        'Charts' => 'Chart',
+        'Charts' => Chart::class,
     ];
 
     public function updateCMSFields(FieldList $fields)
     {
         $config = GridFieldConfig_RecordEditor::create();
         $config->removeComponentsByType('GridFieldDeleteAction');
-        $config->addComponent(new GridFieldSortableRows('SortOrder'));
+        $config->addComponent(new GridFieldOrderableRows('SortOrder'));
 
         $fields->addFieldsToTab(
             'Root.Charts',
@@ -46,13 +53,13 @@ class ChartExtension extends DataExtension
             return '';
         }
 
-        Requirements::javascript(CHARTS_DIR . '/static/js/dist/main.js');
+        Requirements::javascript('flashbackzoo/silverstripe-charts:client/js/dist/main.js');
 
         return ArrayData::create([
                 'ChartID' => $chart->getField('ID'),
                 'ChartType' => $chart->getField('ChartType'),
                 'ChartData' => $chart->getChartData(),
             ])
-            ->renderWith('ChartComponent');
+            ->renderWith('flashbackzoo/SilverStripeCharts/ChartComponent');
     }
 }

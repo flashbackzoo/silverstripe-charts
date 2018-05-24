@@ -1,12 +1,24 @@
 <?php
 
+namespace flashbackzoo\SilverStripeCharts;
+
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Forms\GridField\GridFieldExportButton;
+use SilverStripe\Forms\GridField\GridFieldImportButton;
+use SilverStripe\Forms\RequiredFields;
+use SilverStripe\ORM\DataObject;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+use TractorCow\Colorpicker\Forms\ColorField;
+
 /**
- * @package SilverStripeCharts
- *
  * A set of data belonging to a {@link Chart}.
  */
 class ChartDataset extends DataObject
 {
+    private static $table_name = 'ChartDataSet';
+
     private static $db = [
         'SortOrder'=>'Int',
         'Label' => 'Varchar(255)',
@@ -14,11 +26,11 @@ class ChartDataset extends DataObject
     ];
 
     private static $has_one = [
-        'Chart' => 'Chart',
+        'Chart' => Chart::class,
     ];
 
     private static $has_many = [
-        'DataRows' => 'ChartData',
+        'DataRows' => ChartData::class,
     ];
 
     /**
@@ -26,11 +38,11 @@ class ChartDataset extends DataObject
      */
     private static $background_color = '2196f3';
 
-    public static $summary_fields = [
+    private static $summary_fields = [
         'Label',
     ];
 
-    public static $default_sort = 'SortOrder';
+    private static $default_sort = 'SortOrder';
 
     public function getCMSFields()
     {
@@ -50,13 +62,10 @@ class ChartDataset extends DataObject
             $config->removeComponentsByType('GridFieldFilterHeader');
             $config->removeComponentsByType('GridFieldDeleteAction');
 
-            $importer = new GridFieldImporter('before');
-
-            $config->addComponent($importer);
             $config->addComponent(new GridFieldExportButton('before'));
-            $config->addComponent(new GridFieldSortableRows('SortOrder'));
+            $config->addComponent(new GridFieldOrderableRows('SortOrder'));
             $config
-                ->getComponentByType('GridFieldAddNewButton')
+                ->getComponentByType(GridFieldAddNewButton::class)
                 ->setButtonName('Add Data');
 
             $gridField = GridField::create(
@@ -65,13 +74,6 @@ class ChartDataset extends DataObject
                 $this->getComponents('DataRows'),
                 $config
             );
-
-            $loader = $importer->getLoader($gridField);
-
-            $loader->mappableFields = [
-                'Label' => 'Label',
-                'Value' => 'Value',
-            ];
 
             $fields->addFieldToTab('Root.Main', $gridField);
         }
