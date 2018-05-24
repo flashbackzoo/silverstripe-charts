@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var Chart = require('chart.js');
 
 /**
@@ -8,9 +7,11 @@ var Chart = require('chart.js');
  * @return {Object} - Chart.js chart instance.
  */
 function createChart(canvas) {
-  return new Chart(canvas.getContext('2d'), $(canvas).data('json'));
+  return new Chart(canvas.getContext('2d'), JSON.parse(canvas.dataset.json));
 }
 
-$.each($('.chart__canvas'), function () {
-  createChart(this);
-});
+document
+  .querySelectorAll('.chart__canvas')
+  .forEach(function (el) {
+    createChart(el);
+  });

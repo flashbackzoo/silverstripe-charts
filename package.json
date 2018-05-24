@@ -1,13 +1,13 @@
 {
   "name": "silverstripe-charts",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "description": "Display your data using Chart.js",
-  "main": "static/js/dist/main.js",
+  "main": "client/js/dist/main.js",
   "scripts": {
     "test": "mocha",
     "coverage": "istanbul cover --report html _mocha --",
-    "build": "browserify static/js/src/main.js > static/js/dist/main.js",
-    "build:watch": "watchify static/js/src/main.js -o static/js/dist/main.js"
+    "build": "browserify client/js/src/main.js | uglifyjs > client/js/dist/main.js",
+    "build:watch": "watchify client/js/src/main.js -o client/js/dist/main.js"
   },
   "repository": {
     "type": "git",
@@ -22,14 +22,6 @@
     {
       "name": "David Craig",
       "email": "david@davidcraig.co.nz"
-    },
-    {
-      "name": "Ian Herbert",
-      "email": "ian@silverstripe.com"
-    },
-    {
-      "name": "Jared Lee",
-      "email": "jared@silverstripe.com"
     }
   ],
   "license": "MIT",
@@ -43,8 +35,8 @@
     "chart.js": "^2.5.0",
     "expect.js": "^0.3.1",
     "istanbul": "^0.3.14",
-    "jquery": "^2.1.4",
     "mocha": "^2.2.5",
+    "uglify-js": "https://registry.npmjs.org/uglify-js/-/uglify-js-2.8.29.tgz",
     "watchify": "^3.2.2"
   },
   "browserify": {
