@@ -14,18 +14,11 @@
             "email": "david@davidcraig.co.nz"
         }
     ],
-    "repositories": [
-      {
-          "type": "path",
-          "url": "/Users/david/code/fork/silverstripe-importexport"
-      }
-    ],
     "require": {
       "silverstripe/vendor-plugin": "^1.0",
       "silverstripe/cms": "^4.0",
       "tractorcow/silverstripe-colorpicker": "^4.0",
-      "symbiote/silverstripe-gridfieldextensions": "^3.0",
-      "burnbright/silverstripe-importexport": "@dev"
+      "symbiote/silverstripe-gridfieldextensions": "^3.0"
     },
     "autoload": {
       "psr-4": {
