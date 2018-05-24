@@ -1,18 +1,24 @@
 language: php
 
-php:
-  - 5.6
-
 env:
   global:
-    - DB=MYSQL CORE_RELEASE=3.2
+    - COMPOSER_ROOT_VERSION=5.0.x-dev
+
+matrix:
+  include:
+    - php: 7.2
+      env: DB=MYSQL RECIPE_VERSION=1.x-dev
 
 before_script:
+  # Init PHP
   - phpenv rehash
-  - composer self-update
-  - git clone git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
-  - php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss
-  - cd ~/builds/ss
+  - phpenv config-rm xdebug.ini
+  - echo 'memory_limit=-1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+  # Install composer dependencies
+  - composer validate
+  - composer require --no-update silverstripe/recipe-cms:$RECIPE_VERSION
+  - composer install --prefer-dist --no-interaction --no-progress --no-suggest --optimize-autoloader --verbose --profile
 
 script:
-  - vendor/bin/phpunit silverstripe-charts/tests/
+  - vendor/bin/phpunit

@@ -1,10 +1,7 @@
 <?php
 
-/**
- * @package SilverStripeCharts
- *
- * @subpackage tests
- */
+use SilverStripe\Dev\SapphireTest;
+
 class ChartDatasetTest extends SapphireTest
 {
     protected static $fixture_file = 'ChartDatasetTest.yml';
